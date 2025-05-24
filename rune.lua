@@ -53,7 +53,6 @@ function Rune:draw(x, y)
         love.graphics.setCanvas()
     end
 
-    love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(self.canvas, x, y)
 end

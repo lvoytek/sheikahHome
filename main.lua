@@ -1,18 +1,20 @@
+local runes
+
 function love.load()
     love.window.setTitle("Home")
     love.window.setFullscreen(true)
 
-    local Rune = require("rune")
-    Rune:load()
-
-    rune = Rune.new()
-    rune:select()
+    local RuneManager = require("rune_manager")
+    runes = RuneManager:new()
+    runes:addRune()
+    runes:addRune()
+    runes:addRune()
 end
 
 function love.update(dt)
-    rune:update(dt)
+    runes:update(dt)
 end
 
 function love.draw()
-    rune:draw(100, 100)
+    runes:draw()
 end
