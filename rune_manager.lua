@@ -4,6 +4,7 @@ Rune:load()
 local RuneManager = {}
 RuneManager.__index = RuneManager
 
+-- Create a new RuneManager instance
 function RuneManager:new(runeWidth, margin)
     local self = setmetatable({}, RuneManager)
     self.runes = {}
@@ -13,10 +14,12 @@ function RuneManager:new(runeWidth, margin)
     return self
 end
 
+-- Add a new Rune to the manager
 function RuneManager:addRune()
     table.insert(self.runes, Rune:new(self.runeWidth))
 end
 
+-- Remove a Rune from the manager
 function RuneManager:removeRune(rune)
     for i, r in ipairs(self.runes) do
         if r == rune then
@@ -27,10 +30,12 @@ function RuneManager:removeRune(rune)
     return false
 end
 
+-- Get all runes
 function RuneManager:getRunes()
     return self.runes
 end
 
+-- Get the X position of a rune based on its index
 function RuneManager:getRuneX(index)
     if index < 1 or index > #self.runes then
         return nil
@@ -38,6 +43,7 @@ function RuneManager:getRuneX(index)
     return (index - 1) * (self.runeWidth + self.margin) + love.graphics.getWidth() / 2 - (#self.runes * (self.runeWidth + self.margin)) / 2
 end
 
+-- Select a rune by its index, deselecting any previously selected rune
 function RuneManager:selectRune(index)
     if self.selectedRune == index then
         return
@@ -54,6 +60,7 @@ function RuneManager:selectRune(index)
     self.selectedRune = index
 end
 
+-- Deselect all runes
 function RuneManager:deselectAllRunes()
     if not self.selectedRune then
         return
@@ -66,6 +73,7 @@ function RuneManager:deselectAllRunes()
     self.selectedRune = nil
 end
 
+-- Check if the mouse is over a rune and select it if so
 function RuneManager:CheckMouseOverRune(x, y)
     for i, rune in ipairs(self.runes) do
         local runeX = self:getRuneX(i)
@@ -80,13 +88,14 @@ function RuneManager:CheckMouseOverRune(x, y)
     return nil
 end
 
-
+-- Run the update function for each rune
 function RuneManager:update(dt)
     for _, rune in ipairs(self.runes) do
         rune:update(dt)
     end
 end
 
+-- Draw all runes
 function RuneManager:draw()
     for i, rune in ipairs(self.runes) do
         rune:draw(self:getRuneX(i), love.graphics.getHeight() / 2 - self.runeWidth / 2)
