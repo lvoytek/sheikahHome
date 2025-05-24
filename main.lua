@@ -11,6 +11,10 @@ function love.load()
     runes:addRune()
 end
 
+function love.mousemoved(x, y, dx, dy, istouch)
+    runes:CheckMouseOverRune(x, y)
+end
+
 function love.update(dt)
     runes:update(dt)
 end
