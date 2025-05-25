@@ -11,6 +11,8 @@ function love.load()
     background_image = love.graphics.newImage("img/background.png")
 
     local RuneManager = require("rune_manager")
+    RuneManager:load()
+
     runes = RuneManager:new()
 
     available_apps = application_connector.get_all_applications()

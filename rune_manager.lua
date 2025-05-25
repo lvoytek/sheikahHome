@@ -1,8 +1,16 @@
 local Rune = require("rune")
-Rune:load()
 
 local RuneManager = {}
 RuneManager.__index = RuneManager
+
+local titleFont
+
+-- "static" function to load images and fonts initially
+function RuneManager:load()
+    Rune:load()
+
+    titleFont = love.graphics.newFont("fonts/Roboto-Medium.ttf", 52)
+end
 
 -- Create a new RuneManager instance
 function RuneManager:new(runeWidth, margin)
@@ -104,6 +112,16 @@ end
 
 -- Draw all runes
 function RuneManager:draw()
+    if self.selectedRune ~= nil then
+        local runeName = self.runes[self.selectedRune]:getAppName()
+        if runeName ~= "" then
+            love.graphics.setColor(0x3C / 255, 0xD3 / 255, 0xFC / 255, 1)
+            love.graphics.setFont(titleFont)
+            love.graphics.print(runeName, love.graphics.getWidth() / 2 - titleFont:getWidth(runeName) / 2, love.graphics.getHeight() / 3)
+            love.graphics.setColor(1, 1, 1, 1)
+        end
+    end
+
     for i, rune in ipairs(self.runes) do
         rune:draw(self:getRuneX(i), love.graphics.getHeight() / 2 - self.runeWidth / 2)
     end

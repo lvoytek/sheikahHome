@@ -62,6 +62,13 @@ function Rune:execute()
     end
 end
 
+function Rune:getAppName()
+    if self.app ~= nil and self.app.name ~= nil then
+        return self.app.name
+    end
+    return ""
+end
+
 function Rune:update(dt)
 end
 
