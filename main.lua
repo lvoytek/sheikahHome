@@ -20,6 +20,12 @@ function love.mousemoved(x, y, dx, dy, istouch)
     runes:CheckMouseOverRune(x, y)
 end
 
+function love.mousepressed(x, y, button, istouch)
+    if button == 1 then
+        runes:ClickRune(x, y)
+    end
+end
+
 function love.update(dt)
     runes:update(dt)
 end

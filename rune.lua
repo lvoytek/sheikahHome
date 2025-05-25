@@ -55,6 +55,13 @@ function Rune:deselect()
 
 end
 
+function Rune:execute()
+    if self.app and self.app.executable then
+        print(self.app.executable)
+        os.execute(self.app.executable)
+    end
+end
+
 function Rune:update(dt)
 end
 

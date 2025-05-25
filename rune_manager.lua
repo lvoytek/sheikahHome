@@ -88,6 +88,13 @@ function RuneManager:CheckMouseOverRune(x, y)
     return nil
 end
 
+function RuneManager:ClickRune(x, y)
+    local runeIndex = self:CheckMouseOverRune(x, y)
+    if runeIndex then
+        self.runes[runeIndex]:execute()
+    end
+end
+
 -- Run the update function for each rune
 function RuneManager:update(dt)
     for _, rune in ipairs(self.runes) do
