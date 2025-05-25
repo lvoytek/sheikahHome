@@ -19,6 +19,10 @@ function love.load()
     runes:addRune(available_apps[1])
     runes:addRune(available_apps[6])
     runes:addRune(available_apps[17])
+
+    for i=1, 5 do
+        runes:addRune()
+    end
 end
 
 function love.mousemoved(x, y, dx, dy, istouch)

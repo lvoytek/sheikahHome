@@ -3,6 +3,7 @@ Rune.__index = Rune
 
 local rune_background
 local rune_background_selected
+local rune_background_empty
 
 local function loadImageFromPath(filePath)
     local f = io.open(filePath, "rb")
@@ -23,6 +24,7 @@ end
 function Rune:load()
     rune_background = love.graphics.newImage("img/rune_background.png")
     rune_background_selected = love.graphics.newImage("img/rune_background_selected.png")
+    rune_background_empty = love.graphics.newImage("img/rune_empty.png")
 end
 
 -- Create a new Rune instance
@@ -79,17 +81,21 @@ function Rune:draw(x, y)
         love.graphics.clear()
         love.graphics.setColor(1, 1, 1, 1)
 
-        if self.selected then
-            love.graphics.draw(rune_background_selected, 0, 0, 0, self.width / rune_background_selected:getWidth(), self.width / rune_background_selected:getHeight())
+        if self.app == nil then
+            love.graphics.draw(rune_background_empty, 0, 0, 0, self.width / rune_background_empty:getWidth(), self.width / rune_background_empty:getHeight())
         else
-            love.graphics.draw(rune_background, 0, 0, 0, self.width / rune_background:getWidth(), self.width / rune_background:getHeight())
-        end
+            if self.selected then
+                love.graphics.draw(rune_background_selected, 0, 0, 0, self.width / rune_background_selected:getWidth(), self.width / rune_background_selected:getHeight())
+            else
+                love.graphics.draw(rune_background, 0, 0, 0, self.width / rune_background:getWidth(), self.width / rune_background:getHeight())
+            end
 
-        if self.icon then
-            local iconSize = self.width * 0.75
-            local iconX = (self.width - iconSize) / 2
-            local iconY = (self.width - iconSize) / 2
-            love.graphics.draw(self.icon, iconX, iconY, 0, iconSize / self.icon:getWidth(), iconSize / self.icon:getHeight())
+            if self.icon then
+                local iconSize = self.width * 0.75
+                local iconX = (self.width - iconSize) / 2
+                local iconY = (self.width - iconSize) / 2
+                love.graphics.draw(self.icon, iconX, iconY, 0, iconSize / self.icon:getWidth(), iconSize / self.icon:getHeight())
+            end
         end
 
         self.needsUpdate = false
