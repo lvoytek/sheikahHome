@@ -1,0 +1,19 @@
+Source: sheikah-home
+Section: utils
+Priority: optional
+Maintainer: Lena Voytek <lena@voytek.dev>
+Build-Depends: debhelper (>= 12),
+  fonts-roboto,
+Standards-Version: 4.7.2
+Homepage: https://github.com/lvoytek/sheikahHome
+Vcs-Git: https://github.com/lvoytek/sheikahHome.git
+Vcs-Browser: https://github.com/lvoytek/sheikahHome
+
+Package: sheikah-home
+Architecture: any
+Depends: ${shlibs:Depends},
+  ${misc:Depends},
+  love,
+  libgio-2.0-dev,
+  libglib2.0-dev
+Description: Sheikah Home - A desktop application launcher emulating a Sheikah Slate
