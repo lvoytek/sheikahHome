@@ -4,6 +4,21 @@ Rune.__index = Rune
 local rune_background
 local rune_background_selected
 
+local function loadImageFromPath(filePath)
+    local f = io.open(filePath, "rb")
+    if f then
+        local data = f:read("*all")
+        f:close()
+        if data then
+            data = love.filesystem.newFileData(data, "temp")
+            data = love.image.newImageData(data)
+            local image = love.graphics.newImage(data)
+            return image
+        end
+    end
+    return nil
+end
+
 -- "static" function to load images initially
 function Rune:load()
     rune_background = love.graphics.newImage("img/rune_background.png")
@@ -11,11 +26,18 @@ function Rune:load()
 end
 
 -- Create a new Rune instance
-function Rune:new(width)
+function Rune:new(app, width)
     local self = setmetatable({}, Rune)
     self.selected = false
     self.width = width or 256
     self.canvas = love.graphics.newCanvas(self.width, self.width)
+
+    self.app = app or nil
+    self.icon = nil
+    if self.app and self.app.icon then
+        self.icon = loadImageFromPath(self.app.icon)
+    end
+
     self.needsUpdate = true
     return self
 end
@@ -47,6 +69,13 @@ function Rune:draw(x, y)
             love.graphics.draw(rune_background_selected, 0, 0, 0, self.width / rune_background_selected:getWidth(), self.width / rune_background_selected:getHeight())
         else
             love.graphics.draw(rune_background, 0, 0, 0, self.width / rune_background:getWidth(), self.width / rune_background:getHeight())
+        end
+
+        if self.icon then
+            local iconSize = self.width * 0.75
+            local iconX = (self.width - iconSize) / 2
+            local iconY = (self.width - iconSize) / 2
+            love.graphics.draw(self.icon, iconX, iconY, 0, iconSize / self.icon:getWidth(), iconSize / self.icon:getHeight())
         end
 
         self.needsUpdate = false

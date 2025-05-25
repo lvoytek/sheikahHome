@@ -15,8 +15,8 @@ function RuneManager:new(runeWidth, margin)
 end
 
 -- Add a new Rune to the manager
-function RuneManager:addRune()
-    table.insert(self.runes, Rune:new(self.runeWidth))
+function RuneManager:addRune(app)
+    table.insert(self.runes, Rune:new(app, self.runeWidth))
 end
 
 -- Remove a Rune from the manager
