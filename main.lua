@@ -1,4 +1,4 @@
-local application_connector = require("gio_application_connector")
+local AppManager = require("app_manager")
 
 local runes
 local available_apps
@@ -15,10 +15,11 @@ function love.load()
 
     runes = RuneManager:new()
 
-    available_apps = application_connector.get_all_applications()
-    runes:addRune(available_apps[1])
-    runes:addRune(available_apps[6])
-    runes:addRune(available_apps[17])
+    local appManager = AppManager:new()
+    availableApps = appManager:getAllApps()
+    runes:addRune(availableApps[1])
+    runes:addRune(availableApps[6])
+    runes:addRune(availableApps[17])
 
     for i=1, 5 do
         runes:addRune()

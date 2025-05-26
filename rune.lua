@@ -1,26 +1,9 @@
 local Rune = {}
 Rune.__index = Rune
 
-local application_connector = require("gio_application_connector")
-
 local rune_background
 local rune_background_selected
 local rune_background_empty
-
-local function loadImageFromPath(filePath)
-    local f = io.open(filePath, "rb")
-    if f then
-        local data = f:read("*all")
-        f:close()
-        if data then
-            data = love.filesystem.newFileData(data, "temp")
-            data = love.image.newImageData(data)
-            local image = love.graphics.newImage(data)
-            return image
-        end
-    end
-    return nil
-end
 
 -- "static" function to load images initially
 function Rune:load()
@@ -35,12 +18,7 @@ function Rune:new(app, width)
     self.selected = false
     self.width = width or 256
     self.canvas = love.graphics.newCanvas(self.width, self.width)
-
     self.app = app or nil
-    self.icon = nil
-    if self.app and self.app.icon then
-        self.icon = loadImageFromPath(self.app.icon)
-    end
 
     self.needsUpdate = true
     return self
@@ -60,15 +38,15 @@ function Rune:deselect()
 end
 
 function Rune:execute()
-    if self.app and self.app.gAppInfo then
-        return application_connector.launch_application(self.app.gAppInfo)
+    if self.app then
+        self.app:execute()
     end
 
     return false
 end
 
 function Rune:getAppName()
-    if self.app ~= nil and self.app.name ~= nil then
+    if self.app and self.app.name then
         return self.app.name
     end
     return ""
@@ -84,7 +62,7 @@ function Rune:draw(x, y)
         love.graphics.clear()
         love.graphics.setColor(1, 1, 1, 1)
 
-        if self.app == nil then
+        if not self.app then
             love.graphics.draw(rune_background_empty, 0, 0, 0, self.width / rune_background_empty:getWidth(), self.width / rune_background_empty:getHeight())
         else
             if self.selected then
@@ -93,11 +71,12 @@ function Rune:draw(x, y)
                 love.graphics.draw(rune_background, 0, 0, 0, self.width / rune_background:getWidth(), self.width / rune_background:getHeight())
             end
 
-            if self.icon then
+            local icon = self.app:getIcon()
+            if icon then
                 local iconSize = self.width * 0.75
                 local iconX = (self.width - iconSize) / 2
                 local iconY = (self.width - iconSize) / 2
-                love.graphics.draw(self.icon, iconX, iconY, 0, iconSize / self.icon:getWidth(), iconSize / self.icon:getHeight())
+                love.graphics.draw(icon, iconX, iconY, 0, iconSize / icon:getWidth(), iconSize / icon:getHeight())
             end
         end
 
