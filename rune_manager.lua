@@ -99,7 +99,10 @@ end
 function RuneManager:ClickRune(x, y)
     local runeIndex = self:CheckMouseOverRune(x, y)
     if runeIndex then
-        self.runes[runeIndex]:execute()
+        success = self.runes[runeIndex]:execute()
+        if success then
+            print("Application launched")
+        end
     end
 end
 

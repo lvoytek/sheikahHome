@@ -1,6 +1,8 @@
 local Rune = {}
 Rune.__index = Rune
 
+local application_connector = require("gio_application_connector")
+
 local rune_background
 local rune_background_selected
 local rune_background_empty
@@ -58,10 +60,11 @@ function Rune:deselect()
 end
 
 function Rune:execute()
-    if self.app and self.app.executable then
-        print(self.app.executable)
-        os.execute(self.app.executable)
+    if self.app and self.app.gAppInfo then
+        return application_connector.launch_application(self.app.gAppInfo)
     end
+
+    return false
 end
 
 function Rune:getAppName()
