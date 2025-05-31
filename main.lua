@@ -5,7 +5,6 @@ local available_apps
 local background_image
 
 function love.load()
-    love.window.setTitle("Home")
     love.window.setFullscreen(true)
 
     background_image = love.graphics.newImage("img/background.png")
