@@ -1,4 +1,5 @@
 local AppManager = require("app_manager")
+local ConfigManager = require("config_manager")
 
 local runes
 local available_apps
@@ -16,13 +17,34 @@ function love.load()
 
     local appManager = AppManager:new()
     availableApps = appManager:getAllApps()
-    runes:addRune(availableApps[1])
-    runes:addRune(availableApps[6])
-    runes:addRune(availableApps[17])
 
-    for i=1, 5 do
-        runes:addRune()
+    -- Loading rune layout from config file
+    local configManager = ConfigManager:new()
+    configuredApps = configManager:getApplications()
+
+    for i=1, configManager:getRunes() do
+        if i > #configuredApps then
+            runes:addRune()
+        else
+            appExists = false
+            for j=1, #availableApps do
+                if availableApps[j]:getAppID() == configuredApps[i] then
+                    runes:addRune(availableApps[j])
+                    appExists = true
+                    break
+                end
+            end
+            if not appExists then
+                runes:addRune()
+            end
+        end
     end
+
+    -- Saving rune layout to config file
+    configManager:setApplicationsAndRunes(
+        runes:exportAppIDs(),
+        runes:getRuneCount()
+    )
 end
 
 function love.mousemoved(x, y, dx, dy, istouch)

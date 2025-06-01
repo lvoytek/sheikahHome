@@ -43,6 +43,23 @@ function RuneManager:getRunes()
     return self.runes
 end
 
+-- Get the number of runes
+function RuneManager:getRuneCount()
+    return #self.runes
+end
+
+-- Export apps as list of app IDs
+function RuneManager:exportAppIDs()
+    local appIDs = {}
+    for _, rune in ipairs(self.runes) do
+        local appID = rune:getAppID()
+        if appID and appID ~= "" then
+            table.insert(appIDs, appID)
+        end
+    end
+    return appIDs
+end
+
 -- Get the X position of a rune based on its index
 function RuneManager:getRuneX(index)
     if index < 1 or index > #self.runes then

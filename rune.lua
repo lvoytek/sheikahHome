@@ -45,6 +45,13 @@ function Rune:execute()
     return false
 end
 
+function Rune:getAppID()
+    if self.app and self.app.app_id then
+        return self.app.app_id
+    end
+    return ""
+end
+
 function Rune:getAppName()
     if self.app and self.app.name then
         return self.app.name
