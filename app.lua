@@ -18,7 +18,7 @@ end
 
 function App:new()
     local self = setmetatable({}, App)
-    self.app_id = nil
+    self.appID = nil
     self.name = ""
     self.description = ""
     self.iconStr = ""
@@ -30,12 +30,12 @@ function App:new()
 end
 
 function App:setAppID(id)
-    self.app_id = id
+    self.appID = id
     return self
 end
 
 function App:getAppID()
-    return self.app_id
+    return self.appID
 end
 
 function App:setName(name)

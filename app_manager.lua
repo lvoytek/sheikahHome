@@ -18,7 +18,7 @@ function AppManager:refresh()
         end
     end
 
-    allApps = linuxGtkAppConnector.get_all_applications()
+    allApps = linuxGtkAppConnector.getAllApplications()
 end
 
 -- Provide all apps, extracting by hooking into connector if not yet available

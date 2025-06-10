@@ -2,13 +2,13 @@ local AppManager = require("app_manager")
 local ConfigManager = require("config_manager")
 
 local runes
-local available_apps
-local background_image
+local availableApps
+local backgroundImage
 
 function love.load()
     love.window.setFullscreen(true)
 
-    background_image = love.graphics.newImage("img/background.png")
+    backgroundImage = love.graphics.newImage("img/background.png")
 
     local RuneManager = require("rune_manager")
     RuneManager:load()
@@ -63,7 +63,7 @@ end
 
 function love.draw()
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(background_image, 0, 0, 0, love.graphics.getWidth() / background_image:getWidth(), love.graphics.getHeight() / background_image:getHeight())
+    love.graphics.draw(backgroundImage, 0, 0, 0, love.graphics.getWidth() / backgroundImage:getWidth(), love.graphics.getHeight() / backgroundImage:getHeight())
 
     runes:draw()
 end

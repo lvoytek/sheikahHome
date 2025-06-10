@@ -56,8 +56,8 @@ local function freeAppInfo(gAppInfo)
 end
 
 -- Get the information for all applications known by Gtk
-local function get_all_applications()
-        local app_list = {}
+local function getAllApplications()
+        local appList = {}
         local gioAppList = gio.g_app_info_get_all()
         local node = gioAppList
 
@@ -68,9 +68,9 @@ local function get_all_applications()
                 local description = gio.g_app_info_get_description(appinfo)
 
                 local icon = gio.g_app_info_get_icon(appinfo)
-                local icon_str = nil
+                local iconStr = nil
                 if icon ~= nil then
-                    icon_str = gio.g_icon_to_string(icon)
+                    iconStr = gio.g_icon_to_string(icon)
                 end
 
                 -- Create a new App instance and set its properties
@@ -78,22 +78,22 @@ local function get_all_applications()
                 nextApp:setName(name ~= nil and ffi.string(name) or "")
                 nextApp:setAppID(id ~= nil and ffi.string(id) or "")
                 nextApp:setDescription(description ~= nil and ffi.string(description) or "")
-                nextApp:setIcon(icon_str ~= nil and ffi.string(icon_str) or "")
+                nextApp:setIcon(iconStr ~= nil and ffi.string(iconStr) or "")
                 nextApp:setCAppInfo(appinfo)
                 nextApp:setExecuteFunction(launchApplication)
                 nextApp:setCAppInfoFreeFunction(freeAppInfo)
 
-                table.insert(app_list, nextApp)
+                table.insert(appList, nextApp)
                 node = node.next
         end
 
         -- Free the c struct app list, not the app info
         glib.g_list_free(gioAppList)
 
-        return app_list
+        return appList
 end
 
 return {
-        get_all_applications = get_all_applications,
-        launch_application = launch_application
+        getAllApplications = getAllApplications,
+        launchApplication = launchApplication
 }

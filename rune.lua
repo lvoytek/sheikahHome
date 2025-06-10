@@ -1,15 +1,15 @@
 local Rune = {}
 Rune.__index = Rune
 
-local rune_background
-local rune_background_selected
-local rune_background_empty
+local runeBackground
+local runeBackgroundSelected
+local runeBackgroundEmpty
 
 -- "static" function to load images initially
 function Rune:load()
-    rune_background = love.graphics.newImage("img/rune_background.png")
-    rune_background_selected = love.graphics.newImage("img/rune_background_selected.png")
-    rune_background_empty = love.graphics.newImage("img/rune_empty.png")
+    runeBackground = love.graphics.newImage("img/rune_background.png")
+    runeBackgroundSelected = love.graphics.newImage("img/rune_background_selected.png")
+    runeBackgroundEmpty = love.graphics.newImage("img/rune_empty.png")
 end
 
 -- Create a new Rune instance
@@ -46,15 +46,22 @@ function Rune:execute()
 end
 
 function Rune:getAppID()
-    if self.app and self.app.app_id then
-        return self.app.app_id
+    if self.app then
+        return self.app:getAppID()
     end
     return ""
 end
 
 function Rune:getAppName()
-    if self.app and self.app.name then
-        return self.app.name
+    if self.app then
+        return self.app:getName()
+    end
+    return ""
+end
+
+function Rune:getAppDescription()
+    if self.app then
+        return self.app:getDescription()
     end
     return ""
 end
@@ -70,12 +77,12 @@ function Rune:draw(x, y)
         love.graphics.setColor(1, 1, 1, 1)
 
         if not self.app then
-            love.graphics.draw(rune_background_empty, 0, 0, 0, self.width / rune_background_empty:getWidth(), self.width / rune_background_empty:getHeight())
+            love.graphics.draw(runeBackgroundEmpty, 0, 0, 0, self.width / runeBackgroundEmpty:getWidth(), self.width / runeBackgroundEmpty:getHeight())
         else
             if self.selected then
-                love.graphics.draw(rune_background_selected, 0, 0, 0, self.width / rune_background_selected:getWidth(), self.width / rune_background_selected:getHeight())
+                love.graphics.draw(runeBackgroundSelected, 0, 0, 0, self.width / runeBackgroundSelected:getWidth(), self.width / runeBackgroundSelected:getHeight())
             else
-                love.graphics.draw(rune_background, 0, 0, 0, self.width / rune_background:getWidth(), self.width / rune_background:getHeight())
+                love.graphics.draw(runeBackground, 0, 0, 0, self.width / runeBackground:getWidth(), self.width / runeBackground:getHeight())
             end
 
             local icon = self.app:getIcon()
