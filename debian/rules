@@ -6,3 +6,10 @@
 override_dh_auto_configure:
 	mkdir -p fonts
 	cp /usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Medium.ttf fonts/
+
+override_dh_auto_build:
+	mkdir -p sheikahhome
+	cp -a *.lua img fonts README.md sheikahhome/
+	find sheikahhome -type f -exec chmod 0644 {} \;
+	find sheikahhome -type f -exec touch --date='@$(SOURCE_DATE_EPOCH)' {} \;
+	cd sheikahhome && find -type f | LC_ALL=C sort | env TZ=UTC zip -rq9X ../sheikahhome.love -@
