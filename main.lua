@@ -48,14 +48,14 @@ function love.load()
 end
 
 function love.mousemoved(x, y, dx, dy, istouch)
-    runes:CheckMouseOverRune(x, y)
+    runes:checkMouseOverRune(x, y)
 end
 
 function love.mousepressed(x, y, button, istouch)
     if button == 1 then
-        runes:ClickRune(x, y)
+        runes:clickRune(x, y)
     elseif button == 2 then
-        runes:ConfigureRune(x, y)
+        runes:configureRune(x, y)
     end
 end
 

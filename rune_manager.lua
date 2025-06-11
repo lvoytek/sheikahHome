@@ -104,7 +104,7 @@ function RuneManager:deselectAllRunes()
 end
 
 -- Check if the mouse is over a rune and select it if so
-function RuneManager:CheckMouseOverRune(x, y)
+function RuneManager:checkMouseOverRune(x, y)
     for i, rune in ipairs(self.runes) do
         local runeX = self:getRuneX(i)
         if x >= runeX and x <= runeX + self.runeWidth and
@@ -118,8 +118,8 @@ function RuneManager:CheckMouseOverRune(x, y)
     return nil
 end
 
-function RuneManager:ClickRune(x, y)
-    local runeIndex = self:CheckMouseOverRune(x, y)
+function RuneManager:clickRune(x, y)
+    local runeIndex = self:checkMouseOverRune(x, y)
     if runeIndex then
         success = self.runes[runeIndex]:execute()
         if success then
@@ -128,8 +128,8 @@ function RuneManager:ClickRune(x, y)
     end
 end
 
-function RuneManager:ConfigureRune(x, y)
-    local runeIndex = self:CheckMouseOverRune(x, y)
+function RuneManager:configureRune(x, y)
+    local runeIndex = self:checkMouseOverRune(x, y)
     if runeIndex then
         self.runeSelector = RuneSelector:new(self, x, y)
     end
