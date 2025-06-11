@@ -1,5 +1,6 @@
 local Rune = require("rune")
 local RuneSelector = require("rune_selector")
+local AppManager = require("app_manager")
 
 local RuneManager = {}
 RuneManager.__index = RuneManager
@@ -21,6 +22,9 @@ function RuneManager:new(runeWidth, margin)
     local self = setmetatable({}, RuneManager)
     self.runes = {}
     self.runeSelector = nil
+    self.appManager = AppManager:new()
+    self.availableApps = self.appManager:getAllApps()
+
     self.selectedRune = nil
     self.runeWidth = runeWidth or 256
     self.margin = margin or 25
@@ -30,6 +34,21 @@ end
 -- Add a new Rune to the manager
 function RuneManager:addRune(app)
     table.insert(self.runes, Rune:new(app, self.runeWidth))
+end
+
+-- Add a new Rune with the app associated with the provided app id
+function RuneManager:addRuneByID(appID)
+    appExists = false
+    for j=1, #self.availableApps do
+        if self.availableApps[j]:getAppID() == appID then
+            self:addRune(self.availableApps[j])
+            appExists = true
+            break
+        end
+    end
+    if not appExists then
+        self:addRune()
+    end
 end
 
 -- Remove a Rune from the manager

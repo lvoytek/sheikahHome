@@ -1,8 +1,6 @@
-local AppManager = require("app_manager")
 local ConfigManager = require("config_manager")
 
 local runes
-local availableApps
 local backgroundImage
 
 function love.load()
@@ -15,9 +13,6 @@ function love.load()
 
     runes = RuneManager:new()
 
-    local appManager = AppManager:new()
-    availableApps = appManager:getAllApps()
-
     -- Loading rune layout from config file
     local configManager = ConfigManager:new()
     configuredApps = configManager:getApplications()
@@ -26,17 +21,7 @@ function love.load()
         if i > #configuredApps then
             runes:addRune()
         else
-            appExists = false
-            for j=1, #availableApps do
-                if availableApps[j]:getAppID() == configuredApps[i] then
-                    runes:addRune(availableApps[j])
-                    appExists = true
-                    break
-                end
-            end
-            if not appExists then
-                runes:addRune()
-            end
+            runes:addRuneByID(configuredApps[i])
         end
     end
 
