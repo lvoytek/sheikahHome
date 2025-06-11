@@ -167,8 +167,12 @@ end
 
 -- Run the update function for each rune
 function RuneManager:update(dt)
-    for _, rune in ipairs(self.runes) do
-        rune:update(dt)
+    if self:isConfigureMenuOpen() then
+        self.runeSelector:update(dt)
+    else
+        for _, rune in ipairs(self.runes) do
+            rune:update(dt)
+        end
     end
 end
 
