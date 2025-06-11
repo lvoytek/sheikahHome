@@ -1,4 +1,5 @@
 local Rune = require("rune")
+local RuneSelector = require("rune_selector")
 
 local RuneManager = {}
 RuneManager.__index = RuneManager
@@ -9,6 +10,7 @@ local descriptionFont
 -- "static" function to load images and fonts initially
 function RuneManager:load()
     Rune:load()
+    RuneSelector:load()
 
     titleFont = love.graphics.newFont("fonts/Roboto-Medium.ttf", 52)
     descriptionFont = love.graphics.newFont("fonts/Roboto-Medium.ttf", 38)
@@ -18,6 +20,7 @@ end
 function RuneManager:new(runeWidth, margin)
     local self = setmetatable({}, RuneManager)
     self.runes = {}
+    self.runeSelector = nil
     self.selectedRune = nil
     self.runeWidth = runeWidth or 256
     self.margin = margin or 25
@@ -125,6 +128,13 @@ function RuneManager:ClickRune(x, y)
     end
 end
 
+function RuneManager:ConfigureRune(x, y)
+    local runeIndex = self:CheckMouseOverRune(x, y)
+    if runeIndex then
+        self.runeSelector = RuneSelector:new(self, x, y)
+    end
+end
+
 -- Run the update function for each rune
 function RuneManager:update(dt)
     for _, rune in ipairs(self.runes) do
@@ -155,6 +165,10 @@ function RuneManager:draw()
 
     for i, rune in ipairs(self.runes) do
         rune:draw(self:getRuneX(i), love.graphics.getHeight() / 2 - self.runeWidth / 2)
+    end
+
+    if self.runeSelector then
+        self.runeSelector:draw()
     end
 end
 

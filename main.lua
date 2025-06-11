@@ -54,6 +54,8 @@ end
 function love.mousepressed(x, y, button, istouch)
     if button == 1 then
         runes:ClickRune(x, y)
+    elseif button == 2 then
+        runes:ConfigureRune(x, y)
     end
 end
 
