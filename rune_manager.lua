@@ -105,6 +105,10 @@ end
 
 -- Check if the mouse is over a rune and select it if so
 function RuneManager:checkMouseOverRune(x, y)
+    if self:isConfigureMenuOpen() then
+        return nil
+    end
+
     for i, rune in ipairs(self.runes) do
         local runeX = self:getRuneX(i)
         if x >= runeX and x <= runeX + self.runeWidth and
@@ -118,21 +122,47 @@ function RuneManager:checkMouseOverRune(x, y)
     return nil
 end
 
+-- Open the application connected to the selected rune
 function RuneManager:clickRune(x, y)
-    local runeIndex = self:checkMouseOverRune(x, y)
-    if runeIndex then
-        success = self.runes[runeIndex]:execute()
-        if success then
-            print("Application launched")
+    if self:isConfigureMenuOpen() then
+        if not self.runeSelector:checkMouseOverMenu(x, y) then
+            self:closeConfigureMenu()
+        end
+    else
+        local runeIndex = self:checkMouseOverRune(x, y)
+        if runeIndex then
+            success = self.runes[runeIndex]:execute()
+            if success then
+                print("Application launched")
+            end
         end
     end
 end
 
+-- Open a list of applications to let the user decide a new app for the selected rune
 function RuneManager:configureRune(x, y)
     local runeIndex = self:checkMouseOverRune(x, y)
     if runeIndex then
-        self.runeSelector = RuneSelector:new(self, x, y)
+        self:createConfigureMenu(x, y)
     end
+end
+
+-- Create a menu for application selection
+function RuneManager:createConfigureMenu(x, y)
+    if self.runeSelector then
+        return
+    end
+    self.runeSelector = RuneSelector:new(self, x, y)
+end
+
+-- Close the application selection menu
+function RuneManager:closeConfigureMenu()
+    self.runeSelector = nil
+end
+
+-- Check if the configuration menu is currently open
+function RuneManager:isConfigureMenuOpen()
+    return self.runeSelector ~= nil
 end
 
 -- Run the update function for each rune

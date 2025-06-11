@@ -25,6 +25,12 @@ function RuneSelector:new(runeManager, x, y, width, height, cornerOffset)
     return self
 end
 
+-- Check if the mouse is currently over the menu
+function RuneSelector:checkMouseOverMenu(x, y)
+    return x >= self.x and x <= self.x + self.width and
+           y >= self.y and y <= self.y + self.height
+end
+
 -- Draw the menu and app list on its own canvas
 function RuneSelector:draw()
 
