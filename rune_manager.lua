@@ -4,12 +4,14 @@ local RuneManager = {}
 RuneManager.__index = RuneManager
 
 local titleFont
+local descriptionFont
 
 -- "static" function to load images and fonts initially
 function RuneManager:load()
     Rune:load()
 
     titleFont = love.graphics.newFont("fonts/Roboto-Medium.ttf", 52)
+    descriptionFont = love.graphics.newFont("fonts/Roboto-Medium.ttf", 38)
 end
 
 -- Create a new RuneManager instance
@@ -143,7 +145,8 @@ function RuneManager:draw()
 
             -- Show description if it exists and is different from the name
             if runeDescription ~= "" and runeDescription ~= runeName then
-                love.graphics.print(runeDescription, love.graphics.getWidth() / 2 - titleFont:getWidth(runeDescription) / 2, love.graphics.getHeight() * 2 / 3)
+                love.graphics.setFont(descriptionFont)
+                love.graphics.print(runeDescription, love.graphics.getWidth() / 2 - descriptionFont:getWidth(runeDescription) / 2, love.graphics.getHeight() * 2 / 3)
             end
 
             love.graphics.setColor(1, 1, 1, 1)
