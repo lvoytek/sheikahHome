@@ -14,12 +14,13 @@ function RuneSelector:load()
 end
 
 -- Create a new menu for selecting a new rune application
-function RuneSelector:new(runeManager, x, y, width, height)
+function RuneSelector:new(runeManager, x, y, width, height, cornerOffset)
     local self = setmetatable({}, RuneSelector)
     self.x = x or 0
     self.y = y or 0
     self.width = width or 800
     self.height = height or 600
+    self.offset = cornerOffset or self.width / 50
     self.canvas = love.graphics.newCanvas(self.width, self.width)
     return self
 end
@@ -32,13 +33,15 @@ function RuneSelector:draw()
     love.graphics.clear()
 
     love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0, 0, self.width, self.height, self.width / 50)
+    love.graphics.rectangle("fill", 0, 0, self.width, self.height, self.offset)
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(menuBorder[1], 0, 0)
-    love.graphics.draw(menuBorder[2], self.width - menuBorder[2]:getWidth(), 0)
-    love.graphics.draw(menuBorder[3], 0, self.height - menuBorder[3]:getHeight())
-    love.graphics.draw(menuBorder[4], self.width - menuBorder[4]:getWidth(), self.height - menuBorder[4]:getHeight())
+
+    -- Draw menu corner decorations
+    love.graphics.draw(menuBorder[1], self.offset, self.offset)
+    love.graphics.draw(menuBorder[2], self.width - menuBorder[2]:getWidth() - self.offset, self.offset)
+    love.graphics.draw(menuBorder[3], self.offset, self.height - menuBorder[3]:getHeight() - self.offset)
+    love.graphics.draw(menuBorder[4], self.width - menuBorder[4]:getWidth() - self.offset, self.height - menuBorder[4]:getHeight() - self.offset)
 
     love.graphics.setCanvas()
     love.graphics.draw(self.canvas, self.x, self.y)
