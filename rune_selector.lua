@@ -83,9 +83,15 @@ function RuneSelector:draw()
 
     local maxIcons = iconsPerRow * iconsPerCol
 
-    for i = 1, math.min(#self.appList, maxIcons) do
-        local row = math.floor((i - 1) / iconsPerRow)
-        local col = (i - 1) % iconsPerRow
+    runeNum = 0
+    for i = 1, #self.appList do
+
+        if runeNum >= maxIcons then
+            break
+        end
+
+        local row = math.floor(runeNum / iconsPerRow)
+        local col = runeNum % iconsPerRow
 
         local iconX = innerX + col * (self.appSize + self.margin)
         local iconY = innerY + row * (self.appSize + self.margin)
@@ -94,6 +100,7 @@ function RuneSelector:draw()
         local icon = app:getIcon()
         if icon then
             love.graphics.draw(icon, iconX, iconY, 0, self.appSize / icon:getWidth(), self.appSize / icon:getHeight())
+            runeNum = runeNum + 1
         end
     end
 
