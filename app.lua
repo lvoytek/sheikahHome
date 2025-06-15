@@ -8,9 +8,11 @@ local function loadImageFromPath(filePath)
         f:close()
         if data then
             data = love.filesystem.newFileData(data, "temp")
-            data = love.image.newImageData(data)
-            local image = love.graphics.newImage(data)
-            return image
+            validImage, data = pcall(love.image.newImageData, data)
+            if validImage then
+                local image = love.graphics.newImage(data)
+                return image
+            end
         end
     end
     return nil
