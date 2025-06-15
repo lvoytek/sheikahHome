@@ -14,17 +14,24 @@ function RuneSelector:load()
 end
 
 -- Create a new menu for selecting a new rune application
-function RuneSelector:new(runeManager, x, y, width, height, cornerOffset, animationCycleDistance, animationCycleTime)
+function RuneSelector:new(appList, x, y, width, height, appSize, margin, cornerOffset, animationCycleDistance, animationCycleTime)
     local self = setmetatable({}, RuneSelector)
+    self.appList = appList or {}
+
     self.x = x or 0
     self.y = y or 0
     self.width = width or 800
     self.height = height or 600
+
+    self.appSize = appSize or 128
+    self.margin = margin or 6
+
     self.baseOffset = cornerOffset or self.width / 50
     self.animationOffset = 0
     self.currentOffset = 0
     self.animationCycleDistance = animationCycleDistance or self.baseOffset / 2
     self.animationCycleTime = animationCycleTime or .4
+
     self.canvas = love.graphics.newCanvas(self.width, self.width)
     return self
 end
@@ -63,6 +70,32 @@ function RuneSelector:draw()
     love.graphics.draw(menuBorder[2], self.width - menuBorder[2]:getWidth() - self.currentOffset, self.currentOffset)
     love.graphics.draw(menuBorder[3], self.currentOffset, self.height - menuBorder[3]:getHeight() - self.currentOffset)
     love.graphics.draw(menuBorder[4], self.width - menuBorder[4]:getWidth() - self.currentOffset, self.height - menuBorder[4]:getHeight() - self.currentOffset)
+
+    -- Calculate available area inside the border
+    local innerX = self.baseOffset + self.margin
+    local innerY = self.baseOffset + self.margin
+    local innerWidth = self.width - 2 * (self.baseOffset + self.margin)
+    local innerHeight = self.height - 2 * (self.baseOffset + self.margin)
+
+    -- Calculate how many icons fit per row and column
+    local iconsPerRow = math.floor((innerWidth + self.margin) / (self.appSize + self.margin))
+    local iconsPerCol = math.floor((innerHeight + self.margin) / (self.appSize + self.margin))
+
+    local maxIcons = iconsPerRow * iconsPerCol
+
+    for i = 1, math.min(#self.appList, maxIcons) do
+        local row = math.floor((i - 1) / iconsPerRow)
+        local col = (i - 1) % iconsPerRow
+
+        local iconX = innerX + col * (self.appSize + self.margin)
+        local iconY = innerY + row * (self.appSize + self.margin)
+
+        local app = self.appList[i]
+        local icon = app:getIcon()
+        if icon then
+            love.graphics.draw(icon, iconX, iconY, 0, self.appSize / icon:getWidth(), self.appSize / icon:getHeight())
+        end
+    end
 
     love.graphics.setCanvas()
     love.graphics.draw(self.canvas, self.x, self.y)

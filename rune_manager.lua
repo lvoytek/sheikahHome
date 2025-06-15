@@ -171,7 +171,7 @@ function RuneManager:createConfigureMenu(x, y)
     if self.runeSelector then
         return
     end
-    self.runeSelector = RuneSelector:new(self, x, y)
+    self.runeSelector = RuneSelector:new(self.availableApps, x, y)
 end
 
 -- Close the application selection menu
